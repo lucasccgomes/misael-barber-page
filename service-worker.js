@@ -8,10 +8,8 @@ self.addEventListener('install', event => {
           '/index.html',
           '/style.css',
           '/script.js',
-          '/icon/lowres.webp',
           '/icon/lowres.png',
-          '/icon/hd_hi.png',
-          '/icon/hd_hi.svg'
+          '/icon/hd_hi.png'
         ]);
       })
     );
