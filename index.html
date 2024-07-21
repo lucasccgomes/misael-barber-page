@@ -206,6 +206,9 @@
             console.log('beforeinstallprompt event captured');
             deferredPrompt = e;
             console.log('deferredPrompt set:', deferredPrompt);
+
+            // Enviar mensagem para o pai (iframe)
+            window.parent.postMessage('beforeinstallprompt', '*');
         });
 
         window.addEventListener('message', (event) => {
@@ -213,7 +216,7 @@
             console.log('Current deferredPrompt at message receive:', deferredPrompt);
             console.log('Message origin is:', event.origin);
 
-            const validOrigins = ['http://localhost:5173', 'https://misael-barber.netlify.app']; // Atualize com o domínio correto
+            const validOrigins = ['http://localhost:5173', 'https://misael-barber.netlify.app'];
             if (validOrigins.includes(event.origin)) {
                 if (event.data === 'install-prompt') {
                     console.log('Processing install-prompt message');
@@ -251,7 +254,6 @@
             console.log('Window blurred. Current deferredPrompt:', deferredPrompt);
         });
 
-        // Adicionando log aqui para verificar o estado inicial do deferredPrompt
         console.log('Initial deferredPrompt:', deferredPrompt);
     </script>
     
