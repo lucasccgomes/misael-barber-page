@@ -210,21 +210,25 @@
 
         window.addEventListener('message', (event) => {
             console.log('Message event received:', event.data);
-            if (event.data === 'install-prompt' && window.deferredPrompt) {
-                console.log('install-prompt message received');
-                console.log('Prompting the install with:', window.deferredPrompt);
-                window.deferredPrompt.prompt();
-                window.deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    } else {
-                        console.log('User dismissed the install prompt');
-                    }
-                    window.deferredPrompt = null;
-                    console.log('window.deferredPrompt reset:', window.deferredPrompt);
-                });
+            if (event.data === 'install-prompt') {
+                if (window.deferredPrompt) {
+                    console.log('install-prompt message received');
+                    console.log('Prompting the install with:', window.deferredPrompt);
+                    window.deferredPrompt.prompt();
+                    window.deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        } else {
+                            console.log('User dismissed the install prompt');
+                        }
+                        window.deferredPrompt = null;
+                        console.log('window.deferredPrompt reset:', window.deferredPrompt);
+                    });
+                } else {
+                    console.log('deferredPrompt is null');
+                }
             } else {
-                console.log('deferredPrompt is null or message data is incorrect');
+                console.log('Received message data is incorrect:', event.data);
             }
         });
     </script>
