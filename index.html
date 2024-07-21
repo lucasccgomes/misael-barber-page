@@ -204,7 +204,7 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            console.log('beforeinstallprompt event captured and deferredPrompt set');
+            console.log('beforeinstallprompt event captured and deferredPrompt set:', deferredPrompt);
 
             fetch('http://localhost:3000/capture-event', {
                 method: 'POST',
@@ -224,8 +224,10 @@
             if (event.data.type === 'installPWA') {
                 console.log('installPWA message received in PWA');
                 if (deferredPrompt) {
+                    console.log('Prompting install with deferredPrompt:', deferredPrompt);
                     deferredPrompt.prompt();
                     deferredPrompt.userChoice.then((choiceResult) => {
+                        console.log('User choice result:', choiceResult);
                         if (choiceResult.outcome === 'accepted') {
                             console.log('User accepted the install prompt');
                         } else {
