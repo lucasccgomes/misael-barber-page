@@ -217,6 +217,7 @@
             if (validOrigins.includes(event.origin)) {
                 if (event.data === 'install-prompt') {
                     console.log('Processing install-prompt message');
+                    console.log('deferredPrompt before prompt:', deferredPrompt);
                     if (deferredPrompt) {
                         console.log('Prompting the install with:', deferredPrompt);
                         deferredPrompt.prompt();
