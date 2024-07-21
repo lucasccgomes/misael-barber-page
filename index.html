@@ -213,7 +213,7 @@
             console.log('Current deferredPrompt at message receive:', deferredPrompt);
             console.log('Message origin is:', event.origin);
 
-            const validOrigins = ['http://localhost:5173', 'https://sua-loja-de-aplicativos.com']; // Atualize com o domínio correto
+            const validOrigins = ['http://localhost:5173', 'https://sua-loja-em-producao.com', 'https://misael-barber.netlify.app']; // Atualize com o domínio correto
             if (validOrigins.includes(event.origin)) {
                 if (event.data === 'install-prompt') {
                     console.log('Processing install-prompt message');
