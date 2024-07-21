@@ -200,14 +200,16 @@
                 });
             });
         }
-
+    
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
+            console.log('beforeinstallprompt event captured');
             window.deferredPrompt = e;
         });
-
+    
         window.addEventListener('message', (event) => {
             if (event.data === 'install-prompt' && window.deferredPrompt) {
+                console.log('install-prompt message received');
                 window.deferredPrompt.prompt();
                 window.deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
@@ -219,8 +221,8 @@
                 });
             }
         });
-
     </script>
+    
 </body>
 
 </html>
