@@ -189,6 +189,8 @@
     <!-- JavaScript -->
     <script src="script.js"></script>
     <script>
+        let deferredPrompt;
+    
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js').then(registration => {
@@ -198,8 +200,6 @@
                 });
             });
         }
-    
-        let deferredPrompt;
     
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -211,27 +211,33 @@
         window.addEventListener('message', (event) => {
             console.log('Message event received:', event.data);
             console.log('Current deferredPrompt at message receive:', deferredPrompt);
-            if (event.data === 'install-prompt') {
-                console.log('Processing install-prompt message');
-                if (deferredPrompt) {
-                    console.log('Prompting the install with:', deferredPrompt);
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        console.log('User choice result:', choiceResult);
-                        if (choiceResult.outcome === 'accepted') {
-                            console.log('User accepted the install prompt');
-                        } else {
-                            console.log('User dismissed the install prompt');
-                        }
-                        deferredPrompt = null;
-                        console.log('deferredPrompt reset to null');
-                    });
+    
+            // Verificar a origem da mensagem
+            if (event.origin === 'https://sua-loja-de-aplicativos.com') { // Atualize com o domínio correto
+                if (event.data === 'install-prompt') {
+                    console.log('Processing install-prompt message');
+                    if (deferredPrompt) {
+                        console.log('Prompting the install with:', deferredPrompt);
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            console.log('User choice result:', choiceResult);
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('User accepted the install prompt');
+                            } else {
+                                console.log('User dismissed the install prompt');
+                            }
+                            deferredPrompt = null;
+                            console.log('deferredPrompt reset to null');
+                        });
+                    } else {
+                        console.log('deferredPrompt is null');
+                    }
+                    console.log('Current deferredPrompt after processing message:', deferredPrompt);
                 } else {
-                    console.log('deferredPrompt is null');
+                    console.log('Received message data is incorrect:', event.data);
                 }
-                console.log('Current deferredPrompt after processing message:', deferredPrompt);
             } else {
-                console.log('Received message data is incorrect:', event.data);
+                console.log('Message origin is not valid:', event.origin);
             }
         });
     
@@ -243,6 +249,7 @@
             console.log('Window blurred. Current deferredPrompt:', deferredPrompt);
         });
     </script>
+    
     
 </body>
 
