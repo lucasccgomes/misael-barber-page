@@ -214,6 +214,8 @@
                 body: JSON.stringify({ event: 'beforeinstallprompt' }),
             }).then(response => response.json()).then(data => {
                 console.log('Event sent to server:', data);
+            }).catch(error => {
+                console.error('Error sending event to server:', error);
             });
         });
 
