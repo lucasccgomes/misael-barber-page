@@ -206,7 +206,6 @@
             deferredPrompt = e;
             console.log('beforeinstallprompt event captured and deferredPrompt set:', deferredPrompt);
 
-            sessionStorage.setItem('deferredPrompt', JSON.stringify({ prompt: true }));
             fetch('http://localhost:3000/capture-event', {
                 method: 'POST',
                 headers: {
@@ -220,13 +219,17 @@
             });
         });
 
-        window.addEventListener('message', (event) => {
+        const ws = new WebSocket('ws://localhost:3000');
+
+        ws.onopen = () => {
+            console.log('WebSocket connection opened');
+        };
+
+        ws.onmessage = (event) => {
             console.log('Message event received in PWA:', event.data);
-            if (event.data.type === 'installPWA') {
+            if (event.data === 'installPWA') {
                 console.log('installPWA message received in PWA');
-                const promptData = JSON.parse(sessionStorage.getItem('deferredPrompt'));
-                if (promptData && promptData.prompt) {
-                    console.log('Prompting install with deferredPrompt');
+                if (deferredPrompt) {
                     deferredPrompt.prompt();
                     deferredPrompt.userChoice.then((choiceResult) => {
                         console.log('User choice result:', choiceResult);
@@ -236,13 +239,16 @@
                             console.log('User dismissed the install prompt');
                         }
                         deferredPrompt = null;
-                        sessionStorage.removeItem('deferredPrompt');
                     });
                 } else {
                     console.log('No deferredPrompt available');
                 }
             }
-        });
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
 
         console.log('Initial deferredPrompt:', deferredPrompt);
     </script>
