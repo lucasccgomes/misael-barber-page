@@ -201,14 +201,13 @@
             });
         }
 
-        let deferredPrompt;
+        window.deferredPrompt = null;
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             console.log('beforeinstallprompt event captured');
-            deferredPrompt = e;
             window.deferredPrompt = e;
-            console.log('deferredPrompt set:', deferredPrompt);
+            console.log('deferredPrompt set:', window.deferredPrompt);
         });
 
         window.addEventListener('message', (event) => {
