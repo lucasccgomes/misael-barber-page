@@ -178,6 +178,25 @@
             });
           });
         }
-      </script>     
+
+        window.addEventListener('message', (event) => {
+          if (event.data === 'install-prompt' && window.deferredPrompt) {
+            window.deferredPrompt.prompt();
+            window.deferredPrompt.userChoice.then((choiceResult) => {
+              if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+              } else {
+                console.log('User dismissed the install prompt');
+              }
+              window.deferredPrompt = null;
+            });
+          }
+        });
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          window.deferredPrompt = e;
+        });
+    </script>   
 </body>
 </html>
