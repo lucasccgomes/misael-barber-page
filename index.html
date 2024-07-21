@@ -236,6 +236,14 @@
                 console.log('Received message data is incorrect:', event.data);
             }
         });
+
+        window.addEventListener('focus', () => {
+            console.log('Window focused. Current deferredPrompt:', window.deferredPrompt);
+        });
+
+        window.addEventListener('blur', () => {
+            console.log('Window blurred. Current deferredPrompt:', window.deferredPrompt);
+        });
     </script>
 </body>
 
