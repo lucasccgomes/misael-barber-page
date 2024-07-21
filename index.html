@@ -198,21 +198,21 @@
                 });
             });
         }
-    
+
         let deferredPrompt;
-    
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             console.log('beforeinstallprompt event captured');
             deferredPrompt = e;
             console.log('deferredPrompt set:', deferredPrompt);
         });
-    
+
         window.addEventListener('message', (event) => {
             console.log('Message event received:', event.data);
             console.log('Current deferredPrompt at message receive:', deferredPrompt);
-    
-            // Verificar a origem da mensagem
+            console.log('Message origin is:', event.origin);
+
             const validOrigins = ['http://localhost:5173', 'https://sua-loja-de-aplicativos.com']; // Atualize com o domínio correto
             if (validOrigins.includes(event.origin)) {
                 if (event.data === 'install-prompt') {
@@ -241,11 +241,11 @@
                 console.log('Message origin is not valid:', event.origin);
             }
         });
-    
+
         window.addEventListener('focus', () => {
             console.log('Window focused. Current deferredPrompt:', deferredPrompt);
         });
-    
+
         window.addEventListener('blur', () => {
             console.log('Window blurred. Current deferredPrompt:', deferredPrompt);
         });
