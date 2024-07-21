@@ -214,6 +214,7 @@
             console.log('Message event received:', event.data);
             if (event.data === 'install-prompt') {
                 console.log('Processing install-prompt message');
+                console.log('Current deferredPrompt:', deferredPrompt);
                 if (deferredPrompt) {
                     console.log('Prompting the install with:', deferredPrompt);
                     deferredPrompt.prompt();
