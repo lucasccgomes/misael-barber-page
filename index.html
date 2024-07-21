@@ -201,7 +201,7 @@
             });
         }
 
-        let deferredPrompt = null;
+        let deferredPrompt;
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -215,19 +215,18 @@
             console.log('Message event received:', event.data);
             if (event.data === 'install-prompt') {
                 console.log('Processing install-prompt message');
-                console.log('Current deferredPrompt:', deferredPrompt);
-                if (deferredPrompt) {
-                    console.log('Prompting the install with:', deferredPrompt);
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
+                console.log('Current deferredPrompt:', window.deferredPrompt);
+                if (window.deferredPrompt) {
+                    console.log('Prompting the install with:', window.deferredPrompt);
+                    window.deferredPrompt.prompt();
+                    window.deferredPrompt.userChoice.then((choiceResult) => {
                         if (choiceResult.outcome === 'accepted') {
                             console.log('User accepted the install prompt');
                         } else {
                             console.log('User dismissed the install prompt');
                         }
-                        deferredPrompt = null;
                         window.deferredPrompt = null;
-                        console.log('deferredPrompt reset:', deferredPrompt);
+                        console.log('deferredPrompt reset:', window.deferredPrompt);
                     });
                 } else {
                     console.log('deferredPrompt is null');
