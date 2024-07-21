@@ -198,16 +198,16 @@
                 });
             });
         }
-
+    
         let deferredPrompt;
-
+    
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             console.log('beforeinstallprompt event captured');
             deferredPrompt = e;
             console.log('deferredPrompt set:', deferredPrompt);
         });
-
+    
         window.addEventListener('message', (event) => {
             console.log('Message event received:', event.data);
             console.log('Current deferredPrompt at message receive:', deferredPrompt);
@@ -234,15 +234,16 @@
                 console.log('Received message data is incorrect:', event.data);
             }
         });
-
+    
         window.addEventListener('focus', () => {
             console.log('Window focused. Current deferredPrompt:', deferredPrompt);
         });
-
+    
         window.addEventListener('blur', () => {
             console.log('Window blurred. Current deferredPrompt:', deferredPrompt);
         });
     </script>
+    
 </body>
 
 </html>
