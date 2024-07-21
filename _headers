@@ -1,4 +1,4 @@
 /*
-  Access-Control-Allow-Origin: https://devlogstore.netlify.app/applist
+  Access-Control-Allow-Origin: https://devlogstore.netlify.app
   Access-Control-Allow-Methods: GET, POST, OPTIONS
   Access-Control-Allow-Headers: Origin, Content-Type, Accept
