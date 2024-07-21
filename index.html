@@ -222,6 +222,7 @@
         window.addEventListener('message', (event) => {
             console.log('Message event received in PWA:', event.data);
             if (event.data.type === 'installPWA') {
+                console.log('installPWA message received in PWA');
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
                     deferredPrompt.userChoice.then((choiceResult) => {
