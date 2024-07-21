@@ -201,31 +201,33 @@
             });
         }
 
-        window.deferredPrompt = null; // Inicializa a variável
+        let deferredPrompt = null;
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             console.log('beforeinstallprompt event captured');
+            deferredPrompt = e;
             window.deferredPrompt = e;
-            console.log('deferredPrompt set:', window.deferredPrompt);
+            console.log('deferredPrompt set:', deferredPrompt);
         });
 
         window.addEventListener('message', (event) => {
             console.log('Message event received:', event.data);
             if (event.data === 'install-prompt') {
                 console.log('Processing install-prompt message');
-                console.log('Current deferredPrompt:', window.deferredPrompt);
-                if (window.deferredPrompt) {
-                    console.log('Prompting the install with:', window.deferredPrompt);
-                    window.deferredPrompt.prompt();
-                    window.deferredPrompt.userChoice.then((choiceResult) => {
+                console.log('Current deferredPrompt:', deferredPrompt);
+                if (deferredPrompt) {
+                    console.log('Prompting the install with:', deferredPrompt);
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
                         if (choiceResult.outcome === 'accepted') {
                             console.log('User accepted the install prompt');
                         } else {
                             console.log('User dismissed the install prompt');
                         }
+                        deferredPrompt = null;
                         window.deferredPrompt = null;
-                        console.log('deferredPrompt reset:', window.deferredPrompt);
+                        console.log('deferredPrompt reset:', deferredPrompt);
                     });
                 } else {
                     console.log('deferredPrompt is null');
