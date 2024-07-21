@@ -208,6 +208,7 @@
         });
     
         window.addEventListener('message', (event) => {
+            console.log('Message event received:', event.data);
             if (event.data === 'install-prompt' && window.deferredPrompt) {
                 console.log('install-prompt message received');
                 window.deferredPrompt.prompt();
@@ -221,8 +222,7 @@
                 });
             }
         });
-    </script>
-    
+    </script>    
 </body>
 
 </html>
