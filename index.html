@@ -214,22 +214,24 @@
             console.log('Message event received:', event.data);
             if (event.data === 'install-prompt') {
                 console.log('Processing install-prompt message');
-                console.log('Current deferredPrompt:', window.deferredPrompt);
+                console.log('Current deferredPrompt before prompt:', window.deferredPrompt);
                 if (window.deferredPrompt) {
                     console.log('Prompting the install with:', window.deferredPrompt);
                     window.deferredPrompt.prompt();
                     window.deferredPrompt.userChoice.then((choiceResult) => {
+                        console.log('User choice result:', choiceResult);
                         if (choiceResult.outcome === 'accepted') {
                             console.log('User accepted the install prompt');
                         } else {
                             console.log('User dismissed the install prompt');
                         }
                         window.deferredPrompt = null;
-                        console.log('deferredPrompt reset:', window.deferredPrompt);
+                        console.log('deferredPrompt reset to null');
                     });
                 } else {
                     console.log('deferredPrompt is null');
                 }
+                console.log('Current deferredPrompt after processing message:', window.deferredPrompt);
             } else {
                 console.log('Received message data is incorrect:', event.data);
             }
