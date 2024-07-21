@@ -189,6 +189,8 @@
     <!-- JavaScript -->
     <script src="script.js"></script>
     <script>
+        let deferredPrompt;
+
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js').then(registration => {
@@ -199,59 +201,27 @@
             });
         }
 
-        let deferredPrompt;
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
-            console.log('beforeinstallprompt event captured');
             deferredPrompt = e;
-            console.log('deferredPrompt set:', deferredPrompt);
-
-            // Enviar mensagem para o pai (iframe)
-            window.parent.postMessage('beforeinstallprompt', '*');
+            console.log('beforeinstallprompt event captured and deferredPrompt set');
+            document.dispatchEvent(new Event('beforeinstallpromptcaptured'));
         });
 
-        window.addEventListener('message', (event) => {
-            console.log('Message event received:', event.data);
-            console.log('Current deferredPrompt at message receive:', deferredPrompt);
-            console.log('Message origin is:', event.origin);
-
-            const validOrigins = ['http://localhost:5173', 'https://misael-barber.netlify.app'];
-            if (validOrigins.includes(event.origin)) {
-                if (event.data === 'install-prompt') {
-                    console.log('Processing install-prompt message');
-                    console.log('deferredPrompt before prompt:', deferredPrompt);
-                    if (deferredPrompt) {
-                        console.log('Prompting the install with:', deferredPrompt);
-                        deferredPrompt.prompt();
-                        deferredPrompt.userChoice.then((choiceResult) => {
-                            console.log('User choice result:', choiceResult);
-                            if (choiceResult.outcome === 'accepted') {
-                                console.log('User accepted the install prompt');
-                            } else {
-                                console.log('User dismissed the install prompt');
-                            }
-                            deferredPrompt = null;
-                            console.log('deferredPrompt reset to null');
-                        });
+        document.addEventListener('installPWA', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
                     } else {
-                        console.log('deferredPrompt is null');
+                        console.log('User dismissed the install prompt');
                     }
-                    console.log('Current deferredPrompt after processing message:', deferredPrompt);
-                } else {
-                    console.log('Received message data is incorrect:', event.data);
-                }
+                    deferredPrompt = null;
+                });
             } else {
-                console.log('Message origin is not valid:', event.origin);
+                console.log('No deferredPrompt available');
             }
-        });
-
-        window.addEventListener('focus', () => {
-            console.log('Window focused. Current deferredPrompt:', deferredPrompt);
-        });
-
-        window.addEventListener('blur', () => {
-            console.log('Window blurred. Current deferredPrompt:', deferredPrompt);
         });
 
         console.log('Initial deferredPrompt:', deferredPrompt);
