@@ -205,12 +205,12 @@
             e.preventDefault();
             deferredPrompt = e;
             console.log('beforeinstallprompt event captured and deferredPrompt set');
-            window.parent.postMessage({ type: 'beforeinstallprompt', message: 'PWA ready for installation' }, '*');
+            window.parent.postMessage({ type: 'beforeinstallprompt', message: 'PWA ready for installation' }, 'http://localhost:5173'); // Update with correct origin
         });
 
         window.addEventListener('message', (event) => {
             console.log('Message event received in PWA:', event.data);
-            if (event.data.type === 'installPWA') {
+            if (event.data.type === 'installPWA' && event.origin === 'http://localhost:5173') {
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
                     deferredPrompt.userChoice.then((choiceResult) => {
