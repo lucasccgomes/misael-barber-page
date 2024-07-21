@@ -189,8 +189,6 @@
     <!-- JavaScript -->
     <script src="script.js"></script>
     <script>
-        let deferredPrompt;
-    
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js').then(registration => {
@@ -200,6 +198,8 @@
                 });
             });
         }
+    
+        let deferredPrompt;
     
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -213,7 +213,7 @@
             console.log('Current deferredPrompt at message receive:', deferredPrompt);
     
             // Verificar a origem da mensagem
-            if (event.origin === 'https://sua-loja-de-aplicativos.com') { // Atualize com o domínio correto
+            if (event.origin === 'http://localhost:5173' || event.origin === 'https://sua-loja-de-aplicativos.com') { // Atualize com o domínio correto
                 if (event.data === 'install-prompt') {
                     console.log('Processing install-prompt message');
                     if (deferredPrompt) {
@@ -249,6 +249,7 @@
             console.log('Window blurred. Current deferredPrompt:', deferredPrompt);
         });
     </script>
+    
     
     
 </body>
