@@ -3,10 +3,25 @@ let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
+    showInstallPromotion();
 });
 
-window.addEventListener('message', (event) => {
-    if (event.data === 'promptInstall' && deferredPrompt) {
+function showInstallPromotion() {
+    const installButton = document.createElement('button');
+    installButton.textContent = 'Install App';
+    installButton.style.position = 'fixed';
+    installButton.style.bottom = '10px';
+    installButton.style.right = '10px';
+    installButton.style.padding = '10px';
+    installButton.style.backgroundColor = '#007bff';
+    installButton.style.color = 'white';
+    installButton.style.border = 'none';
+    installButton.style.borderRadius = '5px';
+    installButton.style.cursor = 'pointer';
+    document.body.appendChild(installButton);
+
+    installButton.addEventListener('click', () => {
+        installButton.style.display = 'none';
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
@@ -15,10 +30,10 @@ window.addEventListener('message', (event) => {
                 console.log('User dismissed the A2HS prompt');
             }
             deferredPrompt = null;
-            event.source.close();  // Fecha a janela após a interação do usuário
         });
-    }
-});
+    });
+}
+
 
 
 
